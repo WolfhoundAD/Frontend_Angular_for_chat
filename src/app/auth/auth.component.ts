@@ -26,7 +26,7 @@ export class AuthComponent {
       this.chatService.loginUser(this.user).subscribe(
         response => {
           localStorage.setItem('token', response.token);
-          this.router.navigate(['/chat']);
+          this.router.navigate(['/swagger-ui/index.html']);
         },
         error => console.error('Login failed', error)
       );
