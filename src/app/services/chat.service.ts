@@ -38,6 +38,23 @@ export class ChatService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    return throwError(error);
+    let errorMessage = 'Unknown error!';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side errors
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side errors
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      if (error.error) {
+        try {
+          const errorData = JSON.parse(error.error);
+          errorMessage += `\nDetails: ${JSON.stringify(errorData)}`;
+        } catch (e) {
+          console.error("Error parsing server response: ", error.error);
+        }
+      }
+    }
+    console.error(errorMessage);
+    return throwError(errorMessage);
   }
 }

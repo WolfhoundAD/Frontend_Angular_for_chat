@@ -21,22 +21,19 @@ export class AuthComponent {
 
   constructor(private chatService: ChatService, private router: Router) {}
 
-  onSubmit() {
-    if (this.isLoginMode) {
-      this.chatService.loginUser(this.user).subscribe(
-        response => {
-          localStorage.setItem('token', response.token);
-          this.router.navigate(['/swagger-ui/index.html']);
-        },
-        error => console.error('Login failed', error)
-      );
-    } else {
-      this.chatService.registerUser(this.user).subscribe(
-        response => {
-          this.isLoginMode = true;
-        },
-        error => console.error('Registration failed', error)
-      );
+  async onSubmit(event: Event) {
+    event.preventDefault(); // Предотвращает стандартное поведение формы
+    try {
+      if (this.isLoginMode) {
+        const response = await this.chatService.loginUser(this.user).toPromise();
+        localStorage.setItem('token', response.token);
+        await this.router.navigate(['/chat']);
+      } else {
+        await this.chatService.registerUser(this.user).toPromise();
+        this.isLoginMode = true;
+      }
+    } catch (error) {
+      console.error(this.isLoginMode ? 'Login failed' : 'Registration failed', error);
     }
   }
 
