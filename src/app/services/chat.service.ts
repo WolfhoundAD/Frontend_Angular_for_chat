@@ -1,60 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { Message, User } from '../models/chat.model';
+import { HttpClient } from '@angular/common/http';
+import { ChatDto, Message, User } from '../models/chat.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private baseUrl = 'http://localhost:8081';
+  private apiUrl = 'http://localhost:8081/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  loginUser(user: User): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/login`, user).pipe(
-      catchError(this.handleError)
-    );
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/chat/users`);
   }
 
-  registerUser(user: User): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/register`, user).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-
-  getMessages(): Observable<Message[]> {
-    return this.http.get<Message[]>(`${this.baseUrl}/messages`).pipe(
-      catchError(this.handleError)
-    );
+  getMessages(chatId: number): Observable<Message[]> {
+    return this.http.get<Message[]>(`${this.apiUrl}/message/chat/${chatId}`);
   }
 
   sendMessage(message: Message): Observable<Message> {
-    return this.http.post<Message>(`${this.baseUrl}/messages`, message).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<Message>(`${this.apiUrl}/message/create`, message);
   }
 
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unknown error!';
-    if (error.error instanceof ErrorEvent) {
-      // Client-side errors
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Server-side errors
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      if (error.error) {
-        try {
-          const errorData = JSON.parse(error.error);
-          errorMessage += `\nDetails: ${JSON.stringify(errorData)}`;
-        } catch (e) {
-          console.error("Error parsing server response: ", error.error);
-        }
-      }
-    }
-    console.error(errorMessage);
-    return throwError(errorMessage);
+  createChat(chatDto: ChatDto): Observable<ChatDto> {
+    return this.http.post<ChatDto>(`${this.apiUrl}/chat/create`, chatDto);
   }
+  /*
+  logout(): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/logout`, {});
+  }
+    */
 }

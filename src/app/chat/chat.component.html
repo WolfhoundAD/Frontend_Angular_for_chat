@@ -1,8 +1,32 @@
-<div>
-  <div *ngFor="let message of messages">
-    <strong>{{ message.sender }}</strong>: {{ message.content }}
-  </div>
+<div class="chat-container">
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav mode="side" opened class="sidebar">
+      <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+      <h2>Users</h2>
+      <mat-nav-list>
+        <mat-list-item *ngFor="let user of users" (click)="selectUser(user)" [class.selected]="user === selectedUser">
+          {{ user.username }}
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
 
-  <input [(ngModel)]="newMessage" placeholder="Type your message...">
-  <button (click)="sendMessage()">Send</button>
+    <mat-sidenav-content class="chat-content">
+      <div class="header">
+        <h1>Welcome to Chatter HUB</h1>
+      </div>
+      <div class="messages">
+        <mat-list>
+          <mat-list-item *ngFor="let message of messages">
+            <strong>{{ message.sender }}</strong>: {{ message.content }}
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div class="message-input">
+        <mat-form-field class="example-full-width">
+          <input matInput [(ngModel)]="newMessage" placeholder="Type your message...">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="sendMessage()">Send</button>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

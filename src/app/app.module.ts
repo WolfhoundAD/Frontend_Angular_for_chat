@@ -1,23 +1,24 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
-
-import { AuthComponent } from './auth/auth.component';
 import { ChatComponent } from './chat/chat.component';
+import { FormsModule } from '@angular/forms';
 import { appRoutes } from './app.routes';
 
-@NgModule({
-  declarations: [
+const routes: Routes = [
+  { path: 'chat', component: ChatComponent },
+  { path: '', redirectTo: '/chat', pathMatch: 'full' },
+];
 
-  ],
+@NgModule({
+  declarations: [],
   imports: [
     BrowserModule,
-    FormsModule,
+    BrowserAnimationsModule,
     HttpClientModule,
-    AuthComponent,
-    ChatComponent,
+    FormsModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [],
