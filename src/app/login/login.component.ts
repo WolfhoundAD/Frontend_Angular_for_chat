@@ -23,7 +23,7 @@ import { User } from '../models/chat.model';
 })
 export class LoginComponent {
   user = { username: '', password: '' };
-
+  errorMessage: string | null = null;
   constructor(private authService: AuthService, private router: Router) { }
 
   onSubmit(event: Event) {
@@ -33,10 +33,11 @@ export class LoginComponent {
         console.log('Login successful', user);
         this.authService.setCurrentUser(user); // Сохранение текущего пользователя
         this.router.navigate(['/chat']);
+        this.errorMessage = null; // Сброс сообщения об ошибке при успешном входе
       },
       error => {
         console.error('Failed to login', error);
-        console.log('Error body:', error.error);
+        this.errorMessage = 'Invalid username or password'; // Установка сообщения об ошибке
       }
     );
   }

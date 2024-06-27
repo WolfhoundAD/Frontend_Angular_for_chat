@@ -32,20 +32,38 @@ export class ChatComponent implements OnInit {
   messages: Message[] = [];
   newMessage: string = '';
   users: User[] = [];
+  chats: ChatDto[] = [];
   selectedUser: User | null = null;
   currentChat: ChatDto | null = null;
   currentUser: User | null = null;
-
+  selectedChat: ChatDto | null = null;
+  
   constructor(
     private chatService: ChatService,
     private authService: AuthService,
     private router: Router,
-    public dialog: MatDialog) {}
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit() {
-    this.loadUsers();
     this.currentUser = this.authService.getCurrentUser();
-    console.log('Current user ID:', this.currentUser?.userID); // Добавьте эту строку для отладки
+    if (this.currentUser) {
+      this.loadChats(this.currentUser.userID);
+    } else {
+      console.error('Current user not available');
+    }
+  }
+
+  loadChats(userId: number) {
+    this.chatService.getAllChatsForUser(userId).subscribe(
+      chats => this.chats = chats,
+      error => {
+        console.error('Failed to load chats', error);
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+        }
+      }
+    );
   }
   openCreateChatDialog() {
     const dialogRef = this.dialog.open(CreateChatComponent);
@@ -53,9 +71,14 @@ export class ChatComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Chat created:', result);
-        // Update your UI with the new chat
+        this.loadChats(this.currentUser!.userID);
       }
     });
+  }
+  selectChat(chat: ChatDto) {
+    console.log('Chat selected:', chat);
+    this.selectedChat = chat;
+    this.loadMessages();
   }
 
   loadUsers() {

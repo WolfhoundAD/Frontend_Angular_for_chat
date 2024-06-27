@@ -14,6 +14,10 @@ export class ChatService {
   getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/chat/users`);
   }
+  
+  getAllChatsForUser(userId: number): Observable<ChatDto[]> {
+    return this.http.get<ChatDto[]>(`${this.apiUrl}/chat/user/${userId}/chats`);
+  }
 
   getMessages(chatId: number): Observable<Message[]> {
     return this.http.get<Message[]>(`${this.apiUrl}/message/chat/${chatId}`);

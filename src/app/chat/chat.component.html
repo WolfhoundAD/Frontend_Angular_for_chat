@@ -2,10 +2,10 @@
   <mat-sidenav-container class="example-container">
     <mat-sidenav mode="side" opened class="sidebar">
       <button mat-raised-button color="warn" (click)="logout()">Logout</button>
-      <h2>Users</h2>
+      <h2>Chats</h2>
       <mat-nav-list>
-        <mat-list-item *ngFor="let user of users" (click)="selectUser(user)" [class.selected]="user === selectedUser">
-          {{ user.username }}
+        <mat-list-item *ngFor="let chat of chats" (click)="selectChat(chat)" [class.selected]="chat === selectedChat">
+          {{ chat.chatname }}
         </mat-list-item>
       </mat-nav-list>
       <button mat-raised-button color="primary" class="create-chat-button" (click)="openCreateChatDialog()">Create Chat</button>

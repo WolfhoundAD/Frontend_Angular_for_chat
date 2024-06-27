@@ -13,5 +13,8 @@
 
     <button mat-raised-button color="primary" type="submit">Login</button>
   </form>
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
   <button mat-button (click)="switchToRegister()">Switch to Register</button>
 </div>
