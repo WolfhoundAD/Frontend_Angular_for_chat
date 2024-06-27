@@ -5,7 +5,7 @@
       <h2>Chats</h2>
       <mat-nav-list>
         <mat-list-item *ngFor="let chat of chats" (click)="selectChat(chat)" [class.selected]="chat === selectedChat">
-          {{ chat.chatname }}
+          {{ chat.chatName }}
         </mat-list-item>
       </mat-nav-list>
       <button mat-raised-button color="primary" class="create-chat-button" (click)="openCreateChatDialog()">Create Chat</button>

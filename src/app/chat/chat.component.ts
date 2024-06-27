@@ -37,7 +37,7 @@ export class ChatComponent implements OnInit {
   currentChat: ChatDto | null = null;
   currentUser: User | null = null;
   selectedChat: ChatDto | null = null;
-  
+
   constructor(
     private chatService: ChatService,
     private authService: AuthService,
@@ -116,7 +116,7 @@ export class ChatComponent implements OnInit {
     if (this.selectedUser && this.currentUser) {
       const chatDto: ChatDto = {
         id: 1, // ID будет установлен сервером
-        chatname: `Chat with ${this.selectedUser.username}`,
+        chatName: `Chat with ${this.selectedUser.username}`,
         participantIds: [this.currentUser.userID, this.selectedUser.userID]
       };
       this.chatService.createChat(chatDto).subscribe(

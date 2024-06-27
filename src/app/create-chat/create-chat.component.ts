@@ -46,13 +46,13 @@ export class CreateChatComponent implements OnInit {
   createChat() {
     const chatDto = {
       id: 0,
-      chatname: this.chatName,
+      chatName: this.chatName,
       participantIds: this.selectedUsers
     };
 
     this.chatService.createChat(chatDto).subscribe(
       createdChat => {
-        console.log('Chat created:', createdChat);
+        console.log('Chat created:', chatDto);
         this.dialogRef.close(createdChat);
       },
       error => console.error('Failed to create chat', error)

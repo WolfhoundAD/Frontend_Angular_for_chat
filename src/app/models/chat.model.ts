@@ -14,6 +14,6 @@ export interface User {
 
 export interface ChatDto {
   id: number;
-  chatname: string;
+  chatName: string;
   participantIds: number[];
 }
