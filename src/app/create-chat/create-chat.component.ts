@@ -45,7 +45,7 @@ export class CreateChatComponent implements OnInit {
 
   createChat() {
     const chatDto = {
-      id: 0,
+      chatID: 0,
       chatName: this.chatName,
       participantIds: this.selectedUsers
     };

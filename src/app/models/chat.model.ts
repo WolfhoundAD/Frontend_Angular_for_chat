@@ -1,9 +1,9 @@
 export interface Message {
-  id: number;
-  sender: number;
+  messageID: number;
+  senderID: number;
   content: string;
   timestamp: Date;
-  chatId: number;
+  chatID: number;
 }
 
 export interface User {
@@ -13,7 +13,7 @@ export interface User {
 }
 
 export interface ChatDto {
-  id: number;
+  chatID: number;
   chatName: string;
   participantIds: number[];
 }

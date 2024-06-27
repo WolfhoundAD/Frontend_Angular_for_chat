@@ -94,8 +94,8 @@ export class ChatComponent implements OnInit {
   }
 
   loadMessages() {
-    if (this.currentChat) {
-      this.chatService.getMessages(this.currentChat.id).subscribe(
+    if (this.selectedChat) {
+      this.chatService.getMessages(this.selectedChat.chatID).subscribe(
         messages => this.messages = messages,
         error => console.error('Failed to load messages', error)
       );
@@ -103,7 +103,7 @@ export class ChatComponent implements OnInit {
   }
 
   selectUser(user: User) {
-    console.log('User selected:', user); // Добавьте эту строку для отладки
+    console.log('User selected:', user);
     this.selectedUser = user;
     if (this.currentUser) {
       this.createChatAndLoadMessages();
@@ -115,7 +115,7 @@ export class ChatComponent implements OnInit {
   createChatAndLoadMessages() {
     if (this.selectedUser && this.currentUser) {
       const chatDto: ChatDto = {
-        id: 1, // ID будет установлен сервером
+        chatID: 1, // ID будет установлен сервером
         chatName: `Chat with ${this.selectedUser.username}`,
         participantIds: [this.currentUser.userID, this.selectedUser.userID]
       };
@@ -130,22 +130,30 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage() {
-    if (this.currentChat && this.newMessage.trim()) {
+    if (this.selectedChat && this.newMessage.trim()) {
+      console.log('Selected chat:', this.selectedChat); // Добавьте это для отладки
       const message: Message = {
-        id: 0,
-        chatId: this.currentChat.id,
-        sender: this.currentUser!.userID, // ID текущего пользователя
+        messageID: 0,
+        chatID: this.selectedChat.chatID,
+        senderID: this.currentUser!.userID, // ID текущего пользователя this.currentUser!.userID
         content: this.newMessage,
         timestamp: new Date()
       };
 
+      console.log('Message to be sent:', message); // Добавьте это для отладки
+
       this.chatService.sendMessage(message).subscribe(
         sentMessage => {
+          console.log('Sent message:', sentMessage); // Добавьте это для отладки
           this.messages.push(sentMessage);
           this.newMessage = '';
         },
-        error => console.error('Failed to send message', error)
+        error => {
+          console.error('Failed to send message', error);
+        }
       );
+    } else {
+      console.error('Selected chat is not set or message is empty'); // Добавьте это для отладки
     }
   }
 
