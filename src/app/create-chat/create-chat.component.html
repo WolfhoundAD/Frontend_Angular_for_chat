@@ -1,0 +1,16 @@
+<h2>Create a new chat</h2>
+<form (ngSubmit)="createChat()">
+  <mat-form-field>
+    <mat-label>Chat Name</mat-label>
+    <input matInput [(ngModel)]="chatName" name="chatName" required>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Select Users</mat-label>
+    <mat-select [(ngModel)]="selectedUsers" name="selectedUsers" multiple>
+      <mat-option *ngFor="let user of users" [value]="user.userID">{{ user.username }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Create</button>
+</form>

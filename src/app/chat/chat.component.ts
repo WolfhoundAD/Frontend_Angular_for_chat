@@ -10,6 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { CreateChatComponent } from '../create-chat/create-chat.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-chat',
@@ -34,12 +36,26 @@ export class ChatComponent implements OnInit {
   currentChat: ChatDto | null = null;
   currentUser: User | null = null;
 
-  constructor(private chatService: ChatService, private authService: AuthService, private router: Router) {}
+  constructor(
+    private chatService: ChatService,
+    private authService: AuthService,
+    private router: Router,
+    public dialog: MatDialog) {}
 
   ngOnInit() {
     this.loadUsers();
     this.currentUser = this.authService.getCurrentUser();
     console.log('Current user ID:', this.currentUser?.userID); // Добавьте эту строку для отладки
+  }
+  openCreateChatDialog() {
+    const dialogRef = this.dialog.open(CreateChatComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Chat created:', result);
+        // Update your UI with the new chat
+      }
+    });
   }
 
   loadUsers() {
