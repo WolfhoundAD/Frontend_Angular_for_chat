@@ -3,12 +3,22 @@
   <form (ngSubmit)="onSubmit($event)">
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
-      <input matInput type="text" [(ngModel)]="user.username" name="username" required>
+      <input matInput type="text" [(ngModel)]="registrationData.username" name="username" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
-      <input matInput type="password" [(ngModel)]="user.password" name="password" required>
+      <input matInput type="password" [(ngModel)]="registrationData.password" name="password" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Full Name</mat-label>
+      <input matInput type="text" [(ngModel)]="registrationData.fullName" name="fullName" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Photo URL</mat-label>
+      <input matInput type="text" [(ngModel)]="registrationData.photoUrl" name="photoUrl">
     </mat-form-field>
 
     <button mat-raised-button color="primary" type="submit">Register</button>

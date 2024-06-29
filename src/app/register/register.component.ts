@@ -24,14 +24,19 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class RegisterComponent {
-  user: User = { userID: 0, username: '', password: '' };
+  registrationData = {
+    username: '',
+    password: '',
+    fullName: '',
+    photoUrl: ''
+  };
 
   constructor(private authService: AuthService, private router: Router) {}
 
   async onSubmit(event: Event) {
     event.preventDefault();
     try {
-      await this.authService.register(this.user.username, this.user.password).toPromise(); // Передача двух аргументов
+      await this.authService.register(this.registrationData).toPromise();
       this.router.navigate(['/login']);
     } catch (error) {
       console.error('Registration failed', error);

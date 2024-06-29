@@ -26,8 +26,8 @@ export class AuthService {
       );
   }
 
-  register(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register`, { username, password });
+  register(registrationData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, registrationData);
   }
 
   setCurrentUser(user: User): void {
