@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CreateChatComponent } from '../create-chat/create-chat.component';
 import { MatDialog } from '@angular/material/dialog';
-
+import { WebSocketService } from '../services/webSocket.service';
 @Component({
   selector: 'app-chat',
   standalone: true,
@@ -41,6 +41,7 @@ export class ChatComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private authService: AuthService,
+    private webSocketService: WebSocketService,
     private router: Router,
     public dialog: MatDialog
   ) {}
@@ -49,6 +50,7 @@ export class ChatComponent implements OnInit {
     this.currentUser = this.authService.getCurrentUser();
     if (this.currentUser) {
       this.loadChats(this.currentUser.userID);
+      this.webSocketService.connect('ws://localhost:8081/ws');
     } else {
       console.error('Current user not available');
     }
