@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { CreateChatComponent } from '../create-chat/create-chat.component';
 import { MatDialog } from '@angular/material/dialog';
 import { WebSocketService } from '../services/webSocket.service';
+
 @Component({
   selector: 'app-chat',
   standalone: true,
@@ -51,6 +52,11 @@ export class ChatComponent implements OnInit {
     if (this.currentUser) {
       this.loadChats(this.currentUser.userID);
       this.webSocketService.connect('ws://localhost:8081/ws');
+      this.webSocketService.messages.subscribe(message => {
+        if (this.selectedChat && message.chatID === this.selectedChat.chatID) {
+          this.messages.push(message);
+        }
+      });
     } else {
       console.error('Current user not available');
     }
@@ -67,6 +73,7 @@ export class ChatComponent implements OnInit {
       }
     );
   }
+
   openCreateChatDialog() {
     const dialogRef = this.dialog.open(CreateChatComponent);
 
@@ -77,6 +84,7 @@ export class ChatComponent implements OnInit {
       }
     });
   }
+
   selectChat(chat: ChatDto) {
     console.log('Chat selected:', chat);
     this.selectedChat = chat;
@@ -147,7 +155,8 @@ export class ChatComponent implements OnInit {
       this.chatService.sendMessage(message).subscribe(
         sentMessage => {
           console.log('Sent message:', sentMessage); // Добавьте это для отладки
-          this.messages.push(sentMessage);
+        //  this.messages.push(sentMessage);   // Дубль сообщений протестировать причину
+          this.webSocketService.sendMessage(sentMessage); // Отправьте сообщение через WebSocket
           this.newMessage = '';
         },
         error => {
@@ -170,6 +179,4 @@ export class ChatComponent implements OnInit {
       }
     );
   }
-
-
 }
