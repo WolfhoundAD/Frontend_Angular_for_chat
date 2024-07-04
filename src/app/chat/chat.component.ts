@@ -54,13 +54,19 @@ export class ChatComponent implements OnInit {
       this.webSocketService.connect('ws://localhost:8081/ws');
       this.webSocketService.messages.subscribe(message => {
         if (this.selectedChat && message.chatID === this.selectedChat.chatID) {
+          // Convert timestamp to Date object if necessary
+          message.timestamp = new Date(message.timestamp);
           this.messages.push(message);
+
+          // Sort messages after receiving a new one
+          this.messages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
         }
       });
     } else {
       console.error('Current user not available');
     }
   }
+
 
   loadChats(userId: number) {
     this.chatService.getAllChatsForUser(userId).subscribe(
@@ -106,7 +112,15 @@ export class ChatComponent implements OnInit {
   loadMessages() {
     if (this.selectedChat) {
       this.chatService.getMessages(this.selectedChat.chatID).subscribe(
-        messages => this.messages = messages,
+        messages => {
+          // Convert timestamps to Date objects and sort by timestamp
+          this.messages = messages
+            .map(message => {
+              message.timestamp = new Date(message.timestamp);
+              return message;
+            })
+            .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+        },
         error => console.error('Failed to load messages', error)
       );
     }
@@ -141,22 +155,24 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.selectedChat && this.newMessage.trim()) {
-      console.log('Selected chat:', this.selectedChat); // Добавьте это для отладки
+      console.log('Selected chat:', this.selectedChat); // Debugging
       const message: Message = {
         messageID: 0,
         chatID: this.selectedChat.chatID,
-        senderID: this.currentUser!.userID, // ID текущего пользователя this.currentUser!.userID
+        senderID: this.currentUser!.userID, // Current user ID this.currentUser!.userID
         content: this.newMessage,
         timestamp: new Date()
       };
 
-      console.log('Message to be sent:', message); // Добавьте это для отладки
+      console.log('Message to be sent:', message); // Debugging
 
       this.chatService.sendMessage(message).subscribe(
         sentMessage => {
-          console.log('Sent message:', sentMessage); // Добавьте это для отладки
-        //  this.messages.push(sentMessage);   // Дубль сообщений протестировать причину
-          this.webSocketService.sendMessage(sentMessage); // Отправьте сообщение через WebSocket
+          console.log('Sent message:', sentMessage); // Debugging
+          // Convert timestamp to Date object if necessary
+          sentMessage.timestamp = new Date(sentMessage.timestamp);
+          //this.messages.push(sentMessage);
+          this.webSocketService.sendMessage(sentMessage); // Send message via WebSocket
           this.newMessage = '';
         },
         error => {
@@ -164,7 +180,7 @@ export class ChatComponent implements OnInit {
         }
       );
     } else {
-      console.error('Selected chat is not set or message is empty'); // Добавьте это для отладки
+      console.error('Selected chat is not set or message is empty'); // Debugging
     }
   }
 
@@ -179,4 +195,5 @@ export class ChatComponent implements OnInit {
       }
     );
   }
+
 }
