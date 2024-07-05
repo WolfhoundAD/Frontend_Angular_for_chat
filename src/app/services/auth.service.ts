@@ -26,9 +26,16 @@ export class AuthService {
       );
   }
 
-  register(registrationData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register`, registrationData);
+  register(registrationData: any, photoFile: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('username', registrationData.username);
+    formData.append('password', registrationData.password);
+    formData.append('fullName', registrationData.fullName);
+    formData.append('photo', photoFile);
+
+    return this.http.post<any>(`${this.apiUrl}/register`, formData);
   }
+
 
   setCurrentUser(user: User): void {
     localStorage.setItem('currentUser', JSON.stringify(user));
@@ -42,7 +49,7 @@ export class AuthService {
   logout(): Observable<any> {
     localStorage.removeItem('currentUser');
     return this.http.post<any>(`${this.apiUrl}/logout`, {});
-    
+
   }
 
 }

@@ -26,3 +26,21 @@
 .auth-container button {
   margin-top: 10px;
 }
+
+.file-upload {
+  margin: 20px 0;
+  text-align: left;
+}
+
+.file-upload-label {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #3f51b5;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.file-upload-input {
+  display: none;
+}

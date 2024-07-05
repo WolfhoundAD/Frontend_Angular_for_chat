@@ -27,20 +27,28 @@ export class RegisterComponent {
   registrationData = {
     username: '',
     password: '',
-    fullName: '',
-    photoUrl: ''
+    fullName: ''
   };
+  photoFile: File | null = null;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   async onSubmit(event: Event) {
     event.preventDefault();
     try {
-      await this.authService.register(this.registrationData).toPromise();
-      this.router.navigate(['/login']);
+      if (this.photoFile) {
+        await this.authService.register(this.registrationData, this.photoFile).toPromise();
+        this.router.navigate(['/login']);
+      } else {
+        console.error('No photo file selected');
+      }
     } catch (error) {
       console.error('Registration failed', error);
     }
+  }
+
+  onFileSelected(event: any) {
+    this.photoFile = event.target.files[0];
   }
 
   switchToLogin() {

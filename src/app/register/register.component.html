@@ -16,10 +16,11 @@
       <input matInput type="text" [(ngModel)]="registrationData.fullName" name="fullName" required>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Photo URL</mat-label>
-      <input matInput type="text" [(ngModel)]="registrationData.photoUrl" name="photoUrl">
-    </mat-form-field>
+    <!-- Use a standard input for file upload -->
+    <div class="file-upload">
+      <label for="photo" class="file-upload-label">Choose a Photo</label>
+      <input type="file" id="photo" (change)="onFileSelected($event)" class="file-upload-input">
+    </div>
 
     <button mat-raised-button color="primary" type="submit">Register</button>
   </form>
