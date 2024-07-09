@@ -23,6 +23,8 @@
         </mat-list>
       </div>
       <div class="message-input">
+        <input type="file" (change)="onFileSelected($event)" style="margin-right: 10px;" />
+        <button mat-raised-button color="warn" (click)="cancelAttachment()" *ngIf="selectedFile">Cancel</button>
         <mat-form-field class="example-full-width">
           <input matInput [(ngModel)]="newMessage" placeholder="Type your message...">
         </mat-form-field>

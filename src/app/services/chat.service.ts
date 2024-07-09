@@ -23,9 +23,17 @@ export class ChatService {
     return this.http.get<Message[]>(`${this.apiUrl}/message/chat/${chatId}`);
   }
 
-  sendMessage(message: Message): Observable<Message> {
-    return this.http.post<Message>(`${this.apiUrl}/message/create`, message);
+  sendMessage(message: Message, file: File | null): Observable<Message> {
+    const formData = new FormData();
+    formData.append('message', JSON.stringify(message)); // Сериализация объекта message в строку
+    if (file) {
+      formData.append('file', file);
+    }
+    return this.http.post<Message>(`${this.apiUrl}/message/create`, formData);
   }
+
+
+
 
   createChat(chatDto: ChatDto): Observable<ChatDto> {
     return this.http.post<ChatDto>(`${this.apiUrl}/chat/create`, chatDto);

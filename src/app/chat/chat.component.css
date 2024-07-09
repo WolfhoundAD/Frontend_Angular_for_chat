@@ -75,3 +75,8 @@ html, body, .chat-container, .example-container {
   color: #7f8c8d;
   margin-left: 10px;
 }
+
+
+.message-input button[mat-raised-button][color="warn"] {
+  margin-right: 10px;
+}

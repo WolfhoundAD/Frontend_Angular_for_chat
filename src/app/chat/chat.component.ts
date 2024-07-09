@@ -38,7 +38,14 @@ export class ChatComponent implements OnInit {
   currentChat: ChatDto | null = null;
   currentUser: User | null = null;
   selectedChat: ChatDto | null = null;
-
+  selectedFile: File | null = null;
+  message: Message = { // Объявляем переменную message
+    messageID: 0,
+    chatID: 0,
+    senderID: 0,
+    content: '',
+    timestamp: new Date()
+  };
   constructor(
     private chatService: ChatService,
     private authService: AuthService,
@@ -67,6 +74,14 @@ export class ChatComponent implements OnInit {
     }
   }
 
+
+onFileSelected(event: any) {
+  this.selectedFile = event.target.files[0];
+}
+
+cancelAttachment() {
+  this.selectedFile = null;
+}
 
   loadChats(userId: number) {
     this.chatService.getAllChatsForUser(userId).subscribe(
@@ -154,35 +169,35 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage() {
-    if (this.selectedChat && this.newMessage.trim()) {
-      console.log('Selected chat:', this.selectedChat); // Debugging
+    if (this.selectedChat && (this.newMessage.trim() || this.selectedFile)) {
       const message: Message = {
-        messageID: 0,
+        messageID: 0, // или другое значение по умолчанию
         chatID: this.selectedChat.chatID,
-        senderID: this.currentUser!.userID, // Current user ID this.currentUser!.userID
+        senderID: this.currentUser!.userID,
         content: this.newMessage,
         timestamp: new Date()
       };
 
-      console.log('Message to be sent:', message); // Debugging
 
-      this.chatService.sendMessage(message).subscribe(
+      this.chatService.sendMessage(message, this.selectedFile).subscribe(
         sentMessage => {
-          console.log('Sent message:', sentMessage); // Debugging
-          // Convert timestamp to Date object if necessary
           sentMessage.timestamp = new Date(sentMessage.timestamp);
-          //this.messages.push(sentMessage);
-          this.webSocketService.sendMessage(sentMessage); // Send message via WebSocket
+          this.webSocketService.sendMessage(sentMessage);
           this.newMessage = '';
+          this.selectedFile = null;
         },
         error => {
           console.error('Failed to send message', error);
         }
       );
     } else {
-      console.error('Selected chat is not set or message is empty'); // Debugging
+      console.error('Selected chat is not set or message is empty');
     }
   }
+
+
+
+
 
   logout() {
     this.authService.logout().subscribe(
