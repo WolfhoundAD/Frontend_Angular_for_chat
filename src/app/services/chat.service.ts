@@ -33,8 +33,6 @@ export class ChatService {
   }
 
 
-
-
   createChat(chatDto: ChatDto): Observable<ChatDto> {
     return this.http.post<ChatDto>(`${this.apiUrl}/chat/create`, chatDto);
   }

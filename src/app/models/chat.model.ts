@@ -10,6 +10,9 @@ export interface User {
   userID: number;
   username: string;
   password: string;
+  photoUrl: string;  // Добавлено поле для URL фотографии
+  role?: string;  // Добавлено поле для роли
+  lastLogin?: Date;  // Добавлено поле для последнего входа
 }
 
 export interface ChatDto {

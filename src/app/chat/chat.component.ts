@@ -140,7 +140,7 @@ cancelAttachment() {
       );
     }
   }
-
+/*
   selectUser(user: User) {
     console.log('User selected:', user);
     this.selectedUser = user;
@@ -167,7 +167,7 @@ cancelAttachment() {
       );
     }
   }
-
+*/
   sendMessage() {
     if (this.selectedChat && (this.newMessage.trim() || this.selectedFile)) {
       const message: Message = {

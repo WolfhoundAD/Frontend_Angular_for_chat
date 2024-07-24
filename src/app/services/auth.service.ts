@@ -20,6 +20,7 @@ export class AuthService {
         tap(user => {
           if (user) {
             console.log('User logged in:', user);
+            this.setCurrentUser(user);
             this.currentUser = user;
           }
         })

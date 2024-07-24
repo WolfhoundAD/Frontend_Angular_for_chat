@@ -80,3 +80,11 @@ html, body, .chat-container, .example-container {
 .message-input button[mat-raised-button][color="warn"] {
   margin-right: 10px;
 }
+
+/* Стили для изображения пользователя */
+.user-photo {
+  width: 50px; /* Установите нужную ширину */
+  height: 50px; /* Установите нужную высоту */
+  border-radius: 50%; /* Сделать изображение кругом */
+  object-fit: cover; /* Масштабировать изображение, сохраняя его пропорции */
+}
